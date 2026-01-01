@@ -6,35 +6,28 @@
     <title>AR Video Experience</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const arTarget = document.querySelector('#ar-target');
-            const video = document.querySelector('#ar-video');
-            const audio = document.querySelector('#ar-audio');
-
-            arTarget.addEventListener('targetFound', () => {
-                // Reinicia y reproduce el video
-                video.currentTime = 0;
-                video.play().catch(e => {
-                    console.error("Error video:", e);
-                    // En algunos móviles falla sin muted temporalmente
-                    video.muted = true;
-                    video.play();
-                });
-
-                // Reinicia y reproduce el audio MP3
-                audio.currentTime = 0;
-                audio.play().catch(e => console.error("Error audio:", e));
-            });
-
-            arTarget.addEventListener('targetLost', () => {
-                video.pause();
-                audio.pause();
-            });
-        });
-    </script>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
+        #startButton {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 40px;
+            font-size: 24px;
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            z-index: 1000;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
+    <!-- Botón para iniciar (OBLIGATORIO en móviles) -->
+    <button id="startButton">TOCA PARA INICIAR AR</button>
+
     <a-scene 
         mindar-image="imageTargetSrc: ./marker.mind;" 
         vr-mode-ui="enabled: false" 
@@ -42,7 +35,6 @@
         renderer="colorManagement: true;"
     >
         <a-assets>
-            <!-- Video (sin muted para mejor compatibilidad de reproducción) -->
             <video 
                 id="ar-video" 
                 src="./asset.mp4" 
@@ -52,7 +44,6 @@
                 crossorigin="anonymous"
             ></video>
 
-            <!-- Audio MP3 separado -->
             <audio 
                 id="ar-audio" 
                 src="./audio.mp3" 
@@ -66,11 +57,49 @@
             <a-plane
                 src="#ar-video"
                 position="0 0 0"
-                rotation="-90 0 0"  <!-- Recomendado: -90 en X para que quede horizontal -->
+                rotation="-90 0 0"
                 height="1"
                 width="1.8076923076923077"
             ></a-plane>
         </a-entity>
     </a-scene>
+
+    <script>
+        const startButton = document.getElementById('startButton');
+        const video = document.querySelector('#ar-video');
+        const audio = document.querySelector('#ar-audio');
+        const arTarget = document.querySelector('#ar-target');
+
+        startButton.addEventListener('click', () => {
+            // Oculta el botón
+            startButton.style.display = 'none';
+
+            // Desbloquea video y audio con una reproducción silenciosa temporal
+            video.muted = true;
+            video.play().then(() => {
+                video.pause();
+                video.muted = false;
+                video.currentTime = 0;
+            });
+
+            audio.play().then(() => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+
+            // Ahora activa la reproducción real al detectar el marker
+            arTarget.addEventListener('targetFound', () => {
+                video.currentTime = 0;
+                video.play();
+                audio.currentTime = 0;
+                audio.play();
+            });
+
+            arTarget.addEventListener('targetLost', () => {
+                video.pause();
+                audio.pause();
+            });
+        });
+    </script>
 </body>
 </html>
