@@ -108,6 +108,12 @@
             opacity: 0.8;
         }
 
+        .permission-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
         .permission-warning {
             color: #FFE66D;
             font-size: 0.9rem;
@@ -154,6 +160,60 @@
             font-size: 1rem;
         }
 
+        /* Estado de espera para permiso */
+        .permission-status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .permission-status.visible {
+            display: block;
+        }
+
+        .status-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .status-loading .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        .status-success {
+            color: #4ECDC4;
+            font-size: 1.1rem;
+            font-weight: bold;
+            display: none;
+        }
+
+        .status-success.visible {
+            display: block;
+        }
+
+        .status-error {
+            color: #FF6B6B;
+            font-size: 1.1rem;
+            font-weight: bold;
+            display: none;
+        }
+
+        .status-error.visible {
+            display: block;
+        }
+
         /* Animaciones */
         @keyframes fadeInUp {
             from {
@@ -169,6 +229,15 @@
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* Ocultar TODOS los elementos de UI de A-Frame */
@@ -566,6 +635,20 @@
                 No Permitir
             </button>
             
+            <!-- Estado de la solicitud de permiso -->
+            <div class="permission-status" id="permissionStatus">
+                <div class="status-loading" id="statusLoading">
+                    <div class="spinner"></div>
+                    <span>Esperando tu autorización...</span>
+                </div>
+                <div class="status-success" id="statusSuccess">
+                    ✅ ¡Permiso concedido! Cargando experiencia...
+                </div>
+                <div class="status-error" id="statusError">
+                    ❌ Permiso denegado. No puedes continuar sin acceso a la cámara.
+                </div>
+            </div>
+            
             <div class="permission-warning">
                 ℹ️ La cámara solo se usa para la experiencia AR. No grabamos ni almacenamos ningún video.
             </div>
@@ -624,59 +707,17 @@
         // Estados de permisos
         let cameraPermissionGranted = false;
         let cameraStream = null;
+        let permissionRequested = false;
         
         // Elementos DOM
         const cameraPermissionScreen = document.getElementById('cameraPermissionScreen');
         const loadingScreen = document.getElementById('loadingScreen');
         const allowCameraBtn = document.getElementById('allowCameraBtn');
         const denyCameraBtn = document.getElementById('denyCameraBtn');
-        
-        // Función para solicitar permiso de cámara
-        async function requestCameraPermission() {
-            try {
-                console.log('Solicitando permiso de cámara...');
-                
-                // Intentar acceder a la cámara
-                cameraStream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { 
-                        facingMode: 'environment', // Preferir cámara trasera
-                        width: { ideal: 1920 },
-                        height: { ideal: 1080 }
-                    },
-                    audio: false 
-                });
-                
-                // Si llegamos aquí, el permiso fue concedido
-                cameraPermissionGranted = true;
-                console.log('Permiso de cámara concedido');
-                
-                // Detener el stream inmediatamente (solo necesitamos el permiso)
-                cameraStream.getTracks().forEach(track => track.stop());
-                
-                return true;
-                
-            } catch (error) {
-                console.error('Error al acceder a la cámara:', error);
-                
-                // Mostrar mensaje de error específico
-                let errorMessage = 'No se pudo acceder a la cámara. ';
-                
-                if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
-                    errorMessage += 'El permiso fue denegado. Por favor, permite el acceso a la cámara en la configuración de tu navegador.';
-                } else if (error.name === 'NotFoundError' || error.name === 'DevicesNotFoundError') {
-                    errorMessage += 'No se encontró ninguna cámara.';
-                } else if (error.name === 'NotSupportedError') {
-                    errorMessage += 'Tu navegador no soporta acceso a la cámara.';
-                } else if (error.name === 'NotReadableError' || error.name === 'TrackStartError') {
-                    errorMessage += 'La cámara está siendo usada por otra aplicación.';
-                } else {
-                    errorMessage += 'Error desconocido: ' + error.message;
-                }
-                
-                alert(errorMessage);
-                return false;
-            }
-        }
+        const permissionStatus = document.getElementById('permissionStatus');
+        const statusLoading = document.getElementById('statusLoading');
+        const statusSuccess = document.getElementById('statusSuccess');
+        const statusError = document.getElementById('statusError');
         
         // Función para verificar si ya tenemos permisos
         async function checkExistingCameraPermission() {
@@ -693,8 +734,88 @@
             }
         }
         
-        // Función para ocultar pantalla de permisos y mostrar carga
+        // Función para solicitar permiso de cámara y ESPERAR respuesta
+        async function requestCameraPermission() {
+            if (permissionRequested) return false;
+            
+            permissionRequested = true;
+            
+            try {
+                console.log('Solicitando permiso de cámara...');
+                
+                // Mostrar estado de carga
+                permissionStatus.classList.add('visible');
+                statusLoading.classList.add('visible');
+                statusSuccess.classList.remove('visible');
+                statusError.classList.remove('visible');
+                
+                // Deshabilitar botones mientras se procesa
+                allowCameraBtn.disabled = true;
+                denyCameraBtn.disabled = true;
+                allowCameraBtn.innerHTML = '<span class="btn-icon">⏳</span> Procesando...';
+                
+                // RETARDO para asegurar que el usuario vea el mensaje
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Intentar acceder a la cámara
+                cameraStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        facingMode: 'environment', // Preferir cámara trasera
+                        width: { ideal: 1920 },
+                        height: { ideal: 1080 }
+                    },
+                    audio: false 
+                });
+                
+                // Si llegamos aquí, el permiso fue concedido
+                cameraPermissionGranted = true;
+                console.log('Permiso de cámara concedido');
+                
+                // Mostrar estado de éxito
+                statusLoading.classList.remove('visible');
+                statusSuccess.classList.add('visible');
+                
+                // Detener el stream inmediatamente (solo necesitamos el permiso)
+                cameraStream.getTracks().forEach(track => track.stop());
+                
+                // RETARDO para mostrar el mensaje de éxito
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                return true;
+                
+            } catch (error) {
+                console.error('Error al acceder a la cámara:', error);
+                
+                // Mostrar estado de error
+                statusLoading.classList.remove('visible');
+                statusError.classList.add('visible');
+                
+                // Habilitar botón para reintentar
+                allowCameraBtn.disabled = false;
+                denyCameraBtn.disabled = false;
+                allowCameraBtn.innerHTML = '<span class="btn-icon">🔄</span> Reintentar';
+                
+                // Deshabilitar botón de denegar
+                denyCameraBtn.style.display = 'none';
+                
+                // Cambiar texto del botón de permitir para reintentar
+                allowCameraBtn.onclick = () => {
+                    permissionRequested = false;
+                    statusError.classList.remove('visible');
+                    requestCameraPermission();
+                };
+                
+                return false;
+            }
+        }
+        
+        // Función para ocultar pantalla de permisos y mostrar carga SOLO si se concedió permiso
         function proceedToAR() {
+            if (!cameraPermissionGranted) {
+                console.log('No se puede proceder sin permiso de cámara');
+                return;
+            }
+            
             // Ocultar pantalla de permisos con animación
             cameraPermissionScreen.style.opacity = '0';
             
@@ -949,48 +1070,34 @@
         
         // Event Listeners para los botones de permiso
         allowCameraBtn.addEventListener('click', async () => {
-            // Cambiar texto del botón para indicar procesamiento
-            allowCameraBtn.innerHTML = '<span class="btn-icon">⏳</span> Solicitando...';
-            allowCameraBtn.disabled = true;
-            
-            // Solicitar permiso
+            // Solicitar permiso y ESPERAR respuesta
             const permissionGranted = await requestCameraPermission();
             
             if (permissionGranted) {
-                // Proceder a la experiencia AR
+                // Proceder a la experiencia AR SOLO si se concedió permiso
                 proceedToAR();
-            } else {
-                // Restaurar botón
-                allowCameraBtn.innerHTML = '<span class="btn-icon">✅</span> Permitir Cámara';
-                allowCameraBtn.disabled = false;
-                
-                // Mostrar opción para reintentar
-                alert('No se pudo acceder a la cámara. Por favor, verifica los permisos e intenta de nuevo.');
             }
+            // Si no se concedió, no hacemos nada (ya se muestra mensaje de error)
         });
         
         denyCameraBtn.addEventListener('click', () => {
             // Mostrar mensaje y opciones
-            const userConfirmed = confirm('Sin acceso a la cámara, no podrás disfrutar de la experiencia AR. ¿Estás seguro de que deseas continuar?');
+            const userConfirmed = confirm('Sin acceso a la cámara, no podrás disfrutar de la experiencia AR. ¿Estás seguro de que deseas denegar el permiso?');
             
             if (userConfirmed) {
-                // Puedes decidir qué hacer aquí
-                // Opción 1: Salir de la aplicación
-                // window.close(); // No funciona en todos los navegadores
-                
-                // Opción 2: Mostrar un mensaje estático
+                // Mostrar mensaje estático y no proceder
                 cameraPermissionScreen.innerHTML = `
                     <div class="permission-content">
                         <div class="permission-icon">😔</div>
-                        <h1 class="permission-title">Experiencia Limitada</h1>
+                        <h1 class="permission-title">Permiso Denegado</h1>
                         <div class="permission-description">
                             La experiencia de Realidad Aumentada requiere acceso a la cámara.
                             <br><br>
-                            Puedes regresar y permitir el acceso cuando quieras.
+                            Puedes recargar la página para volver a intentarlo.
                         </div>
                         <button class="permission-btn" id="retryPermissionBtn">
                             <span class="btn-icon">🔄</span>
-                            Intentar de Nuevo
+                            Recargar Página
                         </button>
                     </div>
                 `;
@@ -1013,6 +1120,8 @@
             
             if (hasExistingPermission) {
                 console.log('Ya tiene permisos de cámara, procediendo directamente...');
+                cameraPermissionGranted = true;
+                
                 // Ocultar pantalla de permisos y proceder directamente
                 cameraPermissionScreen.style.display = 'none';
                 loadingScreen.style.display = 'flex';
