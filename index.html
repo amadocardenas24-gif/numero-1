@@ -11,135 +11,58 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
-        html, body {
-            width: 100%;
-            height: 100%;
+        body {
             overflow: hidden;
-            position: fixed;
-            background: #000;
+            height: 100vh;
+            width: 100vw;
+            font-family: 'Arial', sans-serif;
+            background: black;
         }
 
-        /* Pantalla de carga */
+        /* Pantalla de carga simple pero efectiva */
         .loading-screen {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            height: -webkit-fill-available;
-            background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 25%, #4ECDC4 50%, #1A535C 75%, #FF6B6B 100%);
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 25%, #4ECDC4 50%, #1A535C 75%);
             background-size: 400% 400%;
-            animation: gradientBG 8s ease infinite;
+            animation: gradientBG 10s ease infinite;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            padding: 20px;
+            transition: opacity 0.5s ease;
         }
 
         .loading-content {
             text-align: center;
             padding: 20px;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        @media (max-width: 768px) {
-            .loading-title {
-                font-size: 2rem !important;
-                margin-bottom: 15px !important;
-            }
-            
-            .loading-subtitle {
-                font-size: 1.1rem !important;
-                margin-bottom: 25px !important;
-            }
-            
-            .palm-trees {
-                width: 220px !important;
-                height: 140px !important;
-            }
-            
-            .loading-bar-container {
-                width: 90% !important;
-                max-width: 280px !important;
-                height: 22px !important;
-                margin: 20px 0 !important;
-            }
-            
-            .loading-percentage {
-                font-size: 1.6rem !important;
-            }
-            
-            .instructions {
-                font-size: 0.9rem !important;
-                bottom: 15px !important;
-            }
+            max-width: 90%;
         }
 
         .loading-title {
             font-size: 2.5rem;
             color: white;
-            text-shadow: 2px 2px 0 #1A535C;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-        }
-
-        .loading-subtitle {
-            font-size: 1.3rem;
-            color: #1A535C;
+            text-shadow: 3px 3px 0 #1A535C;
             margin-bottom: 30px;
             font-weight: bold;
         }
 
-        /* Gráfica animada de palmeras */
-        .palm-trees {
-            position: relative;
-            width: 280px;
-            height: 160px;
-            margin: 20px auto;
-        }
-
-        .palm-trunk {
-            position: absolute;
-            bottom: 0;
-            width: 14px;
-            background: linear-gradient(to right, #8B4513, #A0522D);
-            border-radius: 7px;
-        }
-
-        .trunk-1 { left: 50px; height: 90px; }
-        .trunk-2 { left: 140px; height: 110px; }
-        .trunk-3 { left: 230px; height: 80px; }
-
-        .palm-leaves {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(45deg, #2E8B57, #90EE90);
-            border-radius: 0 50% 0 50%;
-            transform-origin: bottom center;
-            animation: sway 3s infinite ease-in-out;
-        }
-
-        .leaves-1 { left: 15px; top: 20px; }
-        .leaves-2 { left: 110px; top: 10px; animation-delay: 0.3s; }
-        .leaves-3 { left: 205px; top: 30px; animation-delay: 0.6s; }
-
-        /* Barra de carga */
+        /* Barra de carga simple */
         .loading-bar-container {
             width: 80%;
-            max-width: 350px;
-            height: 25px;
+            max-width: 300px;
+            height: 20px;
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
-            margin: 25px auto;
+            margin: 20px auto;
             border: 2px solid #1A535C;
         }
 
@@ -147,76 +70,44 @@
             height: 100%;
             width: 0%;
             background: linear-gradient(90deg, #FF6B6B, #FFE66D, #4ECDC4);
-            border-radius: 10px;
-            transition: width 0.3s ease;
+            border-radius: 8px;
+            transition: width 0.5s ease;
         }
 
-        /* Porcentaje de carga */
         .loading-percentage {
             font-size: 1.8rem;
-            font-weight: bold;
-            color: #1A535C;
-            margin: 10px 0 30px;
-        }
-
-        /* Instrucciones */
-        .instructions {
-            position: absolute;
-            bottom: 20px;
             color: white;
-            text-align: center;
-            width: 100%;
-            padding: 0 20px;
+            font-weight: bold;
+            margin: 10px 0;
+            text-shadow: 2px 2px 0 #1A535C;
+        }
+
+        .loading-message {
+            color: white;
             font-size: 1rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-        }
-
-        /* Escena AR */
-        #ar-scene {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            opacity: 0;
-            visibility: hidden;
-            z-index: 900;
-        }
-
-        #ar-scene.visible {
-            opacity: 1;
-            visibility: visible;
+            margin-top: 20px;
+            opacity: 0.8;
         }
 
         /* Botón de sonido */
-        .sound-controls {
+        .sound-btn {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            z-index: 1001;
-            display: none;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .sound-btn {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
-            border: 3px solid white;
+            background: #FF6B6B;
+            border: 2px solid white;
             color: white;
             font-size: 24px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-        }
-
-        .sound-btn:hover {
-            transform: scale(1.1);
+            z-index: 1001;
+            display: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         @keyframes gradientBG {
@@ -225,14 +116,15 @@
             100% { background-position: 0% 50%; }
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-        }
-
-        @keyframes sway {
-            0%, 100% { transform: rotate(-3deg); }
-            50% { transform: rotate(3deg); }
+        /* Escena AR */
+        #ar-scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease;
         }
     </style>
 </head>
@@ -240,295 +132,221 @@
     <!-- Pantalla de carga -->
     <div class="loading-screen" id="loadingScreen">
         <div class="loading-content">
-            <h1 class="loading-title">🌴 AR TROPICAL 🌺</h1>
-            <p class="loading-subtitle">Cargando experiencia de Realidad Aumentada</p>
-            
-            <div class="palm-trees">
-                <div class="palm-trunk trunk-1"></div>
-                <div class="palm-trunk trunk-2"></div>
-                <div class="palm-trunk trunk-3"></div>
-                
-                <div class="palm-leaves leaves-1"></div>
-                <div class="palm-leaves leaves-2"></div>
-                <div class="palm-leaves leaves-3"></div>
-            </div>
-            
+            <div class="loading-title">🌴 AR TROPICAL 🌺</div>
             <div class="loading-bar-container">
                 <div class="loading-bar" id="loadingBar"></div>
             </div>
-            
             <div class="loading-percentage" id="loadingPercentage">0%</div>
-            
-            <p class="instructions">🔍 Apunta la cámara al marcador para activar el video</p>
+            <div class="loading-message" id="loadingMessage">Cargando experiencia AR...</div>
         </div>
     </div>
 
-    <!-- Controles de sonido -->
-    <div class="sound-controls" id="soundControls">
-        <button class="sound-btn" id="soundToggle">
-            🔇
-        </button>
-    </div>
+    <!-- Botón de sonido -->
+    <button class="sound-btn" id="soundToggle">🔇</button>
 
     <!-- Escena AR -->
     <div id="ar-scene">
-        <a-scene 
-            mindar-image="imageTargetSrc: ./marker.mind; autoStart: false;" 
-            vr-mode-ui="enabled: false" 
-            device-orientation-permission-ui="enabled: false"
-            renderer="colorManagement: true; alpha: true;"
-            loading-screen="enabled: false"
-        >
-            <a-assets>
-                <video 
-                    id="ar-video" 
-                    src="./asset.mp4" 
-                    preload="auto"
-                    loop 
-                    muted 
-                    playsinline 
-                    crossorigin="anonymous"
-                    webkit-playsinline
-                ></video>
-            </a-assets>
-            
-            <a-camera 
-                position="0 0 0" 
-                look-controls="enabled: false"
-                wasd-controls="enabled: false"
-            ></a-camera>
-            
-            <a-entity 
-                id="ar-target" 
-                mindar-image-target="targetIndex: 0"
-            >
-                <a-plane
-                    src="#ar-video"
-                    position="0 0 0"
-                    rotation="0 0 0"
-                    height="1"
-                    width="1.78"
-                    material="transparent: false; alphaTest: 0.5;"
-                ></a-plane>
-            </a-entity>
-        </a-scene>
+        <!-- La escena A-Frame se insertará aquí -->
     </div>
 
     <script>
-        // Variable global para controlar la carga
-        let resourcesLoaded = false;
-        
-        // Función para actualizar la barra de carga
-        function updateProgressBar(percentage) {
+        // Función para simular carga con retardo
+        function simulateLoading() {
             const loadingBar = document.getElementById('loadingBar');
             const loadingPercentage = document.getElementById('loadingPercentage');
-            
-            if (loadingBar && loadingPercentage) {
-                loadingBar.style.width = percentage + '%';
-                loadingPercentage.textContent = Math.round(percentage) + '%';
-            }
-        }
-        
-        // Función para cargar recursos
-        function loadResources() {
+            const loadingMessage = document.getElementById('loadingMessage');
             let progress = 0;
             
-            // Progreso inicial
-            updateProgressBar(10);
-            
-            // Incrementar progreso gradualmente
-            const progressInterval = setInterval(() => {
-                progress += Math.random() * 5 + 2; // Incremento variable
+            // Incremento más lento para dar tiempo al audio
+            const interval = setInterval(() => {
+                progress += Math.random() * 3 + 2; // 2-5% por intervalo
+                if (progress > 100) progress = 100;
                 
-                // No pasar del 90% hasta que todo esté cargado
-                if (progress > 90) {
-                    progress = 90;
+                loadingBar.style.width = progress + '%';
+                loadingPercentage.textContent = Math.round(progress) + '%';
+                
+                // Cambiar mensajes según progreso
+                if (progress < 30) {
+                    loadingMessage.textContent = 'Inicializando AR...';
+                } else if (progress < 60) {
+                    loadingMessage.textContent = 'Cargando video...';
+                } else if (progress < 90) {
+                    loadingMessage.textContent = 'Preparando audio...';
+                } else {
+                    loadingMessage.textContent = '¡Listo! Busca el marcador';
                 }
                 
-                updateProgressBar(progress);
-                
-                // Si ya cargamos todo, detener el intervalo
-                if (resourcesLoaded && progress >= 90) {
-                    clearInterval(progressInterval);
-                    updateProgressBar(100);
+                if (progress >= 100) {
+                    clearInterval(interval);
                     
-                    // Esperar un momento y luego mostrar la escena AR
+                    // RETARDO IMPORTANTE: Esperar 1.5 segundos extra
                     setTimeout(() => {
-                        showARScene();
-                    }, 500);
+                        initARScene();
+                    }, 1500);
                 }
-            }, 200);
-            
-            // Verificar carga de A-Frame y MindAR
-            waitForAFrame().then(() => {
-                console.log("A-Frame y MindAR cargados");
-                resourcesLoaded = true;
-            }).catch(error => {
-                console.error("Error cargando A-Frame:", error);
-            });
+            }, 150); // Intervalo de 150ms
         }
         
-        // Esperar a que A-Frame cargue
-        function waitForAFrame() {
-            return new Promise((resolve, reject) => {
-                const scene = document.querySelector('a-scene');
-                
-                if (!scene) {
-                    reject('Escena no encontrada');
-                    return;
-                }
-                
-                // Si ya está cargado
-                if (scene.hasLoaded) {
-                    console.log('A-Frame ya cargado');
-                    resolve();
-                    return;
-                }
-                
-                // Esperar evento loaded
-                scene.addEventListener('loaded', () => {
-                    console.log('A-Frame cargado completamente');
-                    
-                    // Configurar eventos del video después de que A-Frame cargue
-                    setupVideoEvents();
-                    resolve();
-                });
-                
-                // Timeout por si hay error
-                setTimeout(() => {
-                    if (!scene.hasLoaded) {
-                        console.warn('Timeout cargando A-Frame, continuando...');
-                        resolve();
-                    }
-                }, 10000);
-            });
-        }
-        
-        // Configurar eventos del video
-        function setupVideoEvents() {
-            const arTarget = document.querySelector('#ar-target');
-            const video = document.querySelector('#ar-video');
-            
-            if (!arTarget || !video) {
-                console.warn('Elementos AR no encontrados, reintentando...');
-                setTimeout(setupVideoEvents, 500);
-                return;
-            }
-            
-            console.log('Configurando eventos de video...');
-            
-            // Evento cuando se encuentra el marcador
-            arTarget.addEventListener('targetFound', (event) => {
-                console.log('Marcador encontrado!');
-                
-                // Mostrar controles de sonido
-                const soundControls = document.getElementById('soundControls');
-                if (soundControls) {
-                    soundControls.style.display = 'flex';
-                }
-                
-                // Reproducir video
-                video.play().then(() => {
-                    console.log('Video reproducido');
-                }).catch(error => {
-                    console.error('Error al reproducir video:', error);
-                });
-            });
-            
-            // Evento cuando se pierde el marcador
-            arTarget.addEventListener('targetLost', (event) => {
-                console.log('Marcador perdido');
-                video.pause();
-            });
-            
-            // Evento de error del video
-            video.addEventListener('error', (e) => {
-                console.error('Error en video:', e);
-                alert('Error cargando el video. Verifica que el archivo asset.mp4 exista.');
-            });
-        }
-        
-        // Mostrar la escena AR
-        function showARScene() {
+        // Inicializar escena AR después del retardo
+        function initARScene() {
             const loadingScreen = document.getElementById('loadingScreen');
             const arScene = document.getElementById('ar-scene');
             
-            // Ocultar pantalla de carga con transición
-            if (loadingScreen) {
-                loadingScreen.style.transition = 'opacity 0.5s ease';
-                loadingScreen.style.opacity = '0';
+            // Desvanecer pantalla de carga
+            loadingScreen.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Ocultar pantalla de carga
+                loadingScreen.style.display = 'none';
                 
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                    
-                    // Mostrar escena AR
-                    if (arScene) {
-                        arScene.classList.add('visible');
+                // Crear escena A-Frame dinámicamente (esto ayuda con la inicialización)
+                arScene.innerHTML = `
+                    <a-scene 
+                        mindar-image="imageTargetSrc: ./marker.mind; autoStart: true; uiScanning: no; uiLoading: no;" 
+                        vr-mode-ui="enabled: false" 
+                        device-orientation-permission-ui="enabled: false"
+                        renderer="colorManagement: true; alpha: true;"
+                        embedded
+                    >
+                        <a-assets>
+                            <video 
+                                id="ar-video" 
+                                src="./asset.mp4" 
+                                preload="auto"
+                                loop 
+                                muted 
+                                playsinline 
+                                crossorigin="anonymous"
+                                webkit-playsinline
+                            ></video>
+                        </a-assets>
                         
-                        // Iniciar MindAR
-                        const scene = document.querySelector('a-scene');
-                        if (scene && scene.systems['mindar-image-system']) {
-                            console.log('Iniciando MindAR...');
-                            scene.systems['mindar-image-system'].start();
-                        }
-                    }
-                }, 500);
-            }
-        }
-        
-        // Configurar control de sonido
-        function setupSoundControl() {
-            const soundToggle = document.getElementById('soundToggle');
-            if (!soundToggle) return;
-            
-            let isMuted = true;
-            
-            soundToggle.addEventListener('click', () => {
-                const video = document.querySelector('#ar-video');
-                if (!video) return;
+                        <a-camera 
+                            position="0 0 0" 
+                            look-controls="enabled: false"
+                            wasd-controls="enabled: false"
+                        ></a-camera>
+                        
+                        <a-entity 
+                            id="ar-target" 
+                            mindar-image-target="targetIndex: 0"
+                        >
+                            <a-plane
+                                src="#ar-video"
+                                position="0 0 0"
+                                rotation="0 0 0"
+                                height="1"
+                                width="1.78"
+                                material="transparent: true; alphaTest: 0.5;"
+                            ></a-plane>
+                        </a-entity>
+                    </a-scene>
+                `;
                 
-                isMuted = !isMuted;
-                video.muted = isMuted;
-                
-                // Cambiar icono
-                soundToggle.textContent = isMuted ? '🔇' : '🔊';
-                
-                // Feedback visual
-                soundToggle.style.transform = 'scale(0.9)';
+                // Mostrar escena AR
                 setTimeout(() => {
-                    soundToggle.style.transform = 'scale(1)';
+                    arScene.style.opacity = '1';
+                    
+                    // Esperar a que A-Frame cargue y configurar eventos
+                    setTimeout(() => {
+                        setupAREvents();
+                    }, 1000); // Otro retardo para asegurar
                 }, 100);
                 
-                console.log('Sonido ' + (isMuted ? 'desactivado' : 'activado'));
-            });
+            }, 500);
         }
         
-        // Inicializar cuando el DOM esté listo
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM cargado, iniciando carga...');
+        // Configurar eventos AR
+        function setupAREvents() {
+            const soundToggle = document.getElementById('soundToggle');
+            let isMuted = true;
             
-            // Configurar control de sonido
-            setupSoundControl();
-            
-            // Ajustar altura para móviles
-            function adjustForMobile() {
-                const loadingScreen = document.getElementById('loadingScreen');
-                if (loadingScreen) {
-                    loadingScreen.style.height = window.innerHeight + 'px';
+            // Esperar a que existan los elementos
+            const checkInterval = setInterval(() => {
+                const arTarget = document.querySelector('#ar-target');
+                const video = document.querySelector('#ar-video');
+                
+                if (arTarget && video) {
+                    clearInterval(checkInterval);
+                    
+                    console.log('Configurando eventos AR...');
+                    
+                    // Evento cuando se encuentra el marcador
+                    arTarget.addEventListener('targetFound', () => {
+                        console.log('Marcador detectado - Reproduciendo video');
+                        
+                        // Mostrar botón de sonido
+                        soundToggle.style.display = 'flex';
+                        
+                        // Reproducir video (con mute por defecto)
+                        video.play().catch(e => {
+                            console.log('Video play falló, intentando con mute:', e);
+                            video.muted = true;
+                            video.play();
+                        });
+                    });
+                    
+                    // Evento cuando se pierde el marcador
+                    arTarget.addEventListener('targetLost', () => {
+                        console.log('Marcador perdido - Pausando video');
+                        video.pause();
+                    });
+                    
+                    // Configurar botón de sonido
+                    soundToggle.addEventListener('click', () => {
+                        isMuted = !isMuted;
+                        video.muted = isMuted;
+                        
+                        if (isMuted) {
+                            soundToggle.textContent = '🔇';
+                            console.log('Sonido desactivado');
+                        } else {
+                            soundToggle.textContent = '🔊';
+                            console.log('Sonido activado');
+                            
+                            // RETARDO CRÍTICO: Pequeño delay antes de activar audio
+                            setTimeout(() => {
+                                if (!isMuted) {
+                                    video.muted = false;
+                                }
+                            }, 200);
+                        }
+                        
+                        // Feedback visual
+                        soundToggle.style.transform = 'scale(0.9)';
+                        setTimeout(() => {
+                            soundToggle.style.transform = 'scale(1)';
+                        }, 100);
+                    });
+                    
+                    // También activar sonido al tocar la pantalla (para iOS)
+                    document.addEventListener('touchstart', function firstTouch() {
+                        console.log('Interacción táctil detectada');
+                        soundToggle.style.display = 'flex';
+                        document.removeEventListener('touchstart', firstTouch);
+                    });
+                    
+                    console.log('Eventos AR configurados correctamente');
                 }
-            }
+            }, 100);
+        }
+        
+        // Iniciar cuando la página cargue
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('Iniciando carga con retardo...');
             
-            // Ajustar inicialmente y en redimensionamiento
-            adjustForMobile();
-            window.addEventListener('resize', adjustForMobile);
-            
-            // Iniciar carga de recursos
-            setTimeout(loadResources, 300);
+            // Pequeño delay inicial antes de empezar la barra
+            setTimeout(() => {
+                simulateLoading();
+            }, 500);
         });
         
-        // También iniciar cuando la ventana cargue completamente
-        window.addEventListener('load', function() {
-            console.log('Ventana completamente cargada');
+        // Manejar redimensionamiento
+        window.addEventListener('resize', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.style.height = window.innerHeight + 'px';
+            }
         });
     </script>
 </body>
