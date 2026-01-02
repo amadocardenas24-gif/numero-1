@@ -23,17 +23,14 @@
             background: #000;
         }
 
-        /* Pantalla de carga - FIXED para móvil */
+        /* Pantalla de carga */
         .loading-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            height: -webkit-fill-available; /* Para Safari iOS */
-            height: fill-available;
-            min-height: 100vh;
-            min-height: -webkit-fill-available;
+            height: -webkit-fill-available;
             background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 25%, #4ECDC4 50%, #1A535C 75%, #FF6B6B 100%);
             background-size: 400% 400%;
             animation: gradientBG 8s ease infinite;
@@ -42,165 +39,140 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            transition: opacity 1s ease;
+            transition: opacity 0.5s ease;
             padding: 20px;
-            overflow: hidden;
         }
 
-        /* Contenedor de contenido con scroll si es necesario */
         .loading-content {
             text-align: center;
             padding: 20px;
             width: 100%;
             max-width: 500px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
 
-        /* Ajustes para móvil */
         @media (max-width: 768px) {
             .loading-title {
-                font-size: 2.2rem !important;
+                font-size: 2rem !important;
                 margin-bottom: 15px !important;
             }
             
             .loading-subtitle {
-                font-size: 1.2rem !important;
-                margin-bottom: 30px !important;
+                font-size: 1.1rem !important;
+                margin-bottom: 25px !important;
             }
             
             .palm-trees {
-                width: 250px !important;
-                height: 150px !important;
+                width: 220px !important;
+                height: 140px !important;
             }
             
             .loading-bar-container {
                 width: 90% !important;
-                max-width: 300px !important;
-                height: 25px !important;
+                max-width: 280px !important;
+                height: 22px !important;
+                margin: 20px 0 !important;
             }
             
             .loading-percentage {
-                font-size: 1.8rem !important;
+                font-size: 1.6rem !important;
             }
             
             .instructions {
-                font-size: 1rem !important;
-                padding: 0 15px !important;
-                bottom: 10px !important;
+                font-size: 0.9rem !important;
+                bottom: 15px !important;
             }
         }
 
-        @media (max-height: 700px) {
+        @media (max-height: 600px) {
             .loading-title {
-                font-size: 1.8rem !important;
+                font-size: 1.6rem !important;
             }
             
             .palm-trees {
-                transform: scale(0.8);
-                margin: 15px auto !important;
+                transform: scale(0.7);
+                margin: 10px auto !important;
             }
             
-            .loading-bar-container {
-                margin: 20px 0 !important;
-            }
-        }
-
-        /* Ajustes específicos para iPhone */
-        @supports (-webkit-touch-callout: none) {
-            .loading-screen {
-                height: 100vh;
-                height: -webkit-fill-available;
+            .loading-subtitle {
+                margin-bottom: 15px !important;
             }
         }
 
         .loading-title {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: white;
-            text-shadow: 3px 3px 0 #1A535C,
-                         -2px -2px 0 #4ECDC4;
+            text-shadow: 2px 2px 0 #1A535C;
             margin-bottom: 20px;
             animation: pulse 2s infinite;
-            word-break: break-word;
-            line-height: 1.2;
         }
 
         .loading-subtitle {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: #1A535C;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             font-weight: bold;
-            line-height: 1.3;
         }
 
         /* Gráfica animada de palmeras */
         .palm-trees {
             position: relative;
-            width: 300px;
-            height: 200px;
-            margin: 30px auto;
-            flex-shrink: 0;
+            width: 280px;
+            height: 160px;
+            margin: 20px auto;
         }
 
         .palm-trunk {
             position: absolute;
             bottom: 0;
-            width: 15px;
+            width: 14px;
             background: linear-gradient(to right, #8B4513, #A0522D);
             border-radius: 7px;
         }
 
-        .trunk-1 { left: 50px; height: 100px; }
-        .trunk-2 { left: 150px; height: 130px; }
-        .trunk-3 { left: 250px; height: 90px; }
+        .trunk-1 { left: 50px; height: 90px; }
+        .trunk-2 { left: 140px; height: 110px; }
+        .trunk-3 { left: 230px; height: 80px; }
 
         .palm-leaves {
             position: absolute;
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             background: linear-gradient(45deg, #2E8B57, #90EE90);
             border-radius: 0 50% 0 50%;
             transform-origin: bottom center;
             animation: sway 3s infinite ease-in-out;
         }
 
-        .leaves-1 { left: 10px; top: 20px; animation-delay: 0s; }
-        .leaves-2 { left: 110px; top: 0; animation-delay: 0.5s; }
-        .leaves-3 { left: 210px; top: 40px; animation-delay: 1s; }
+        .leaves-1 { left: 15px; top: 20px; }
+        .leaves-2 { left: 110px; top: 10px; animation-delay: 0.3s; }
+        .leaves-3 { left: 205px; top: 30px; animation-delay: 0.6s; }
 
         /* Barra de carga */
         .loading-bar-container {
             width: 80%;
-            max-width: 400px;
-            height: 30px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
+            max-width: 350px;
+            height: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
             overflow: hidden;
-            margin: 30px 0;
-            border: 3px solid #1A535C;
-            flex-shrink: 0;
+            margin: 25px auto;
+            border: 2px solid #1A535C;
         }
 
         .loading-bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, #FF6B6B, #FFE66D, #4ECDC4, #1A535C);
-            background-size: 300% 100%;
-            animation: gradientBar 2s infinite linear;
-            border-radius: 12px;
+            background: linear-gradient(90deg, #FF6B6B, #FFE66D, #4ECDC4);
+            border-radius: 10px;
             transition: width 0.3s ease;
         }
 
         /* Porcentaje de carga */
         .loading-percentage {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: #1A535C;
-            margin-top: 10px;
-            text-shadow: 2px 2px 0 white;
-            flex-shrink: 0;
+            margin: 10px 0 30px;
         }
 
         /* Instrucciones */
@@ -211,31 +183,33 @@
             text-align: center;
             width: 100%;
             padding: 0 20px;
-            font-size: 1.2rem;
-            text-shadow: 1px 1px 2px #1A535C;
-            animation: fadeInOut 3s infinite;
+            font-size: 1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
-        /* Escena AR */
+        /* Escena AR - visible desde el inicio pero detrás */
         #ar-scene {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            height: -webkit-fill-available;
             opacity: 0;
-            transition: opacity 1s ease;
-            z-index: 999;
+            visibility: hidden;
+            z-index: 900;
+            transition: opacity 0.5s ease, visibility 0.5s;
         }
 
-        /* Asegurar que la escena A-Frame ocupe toda la pantalla */
-        #ar-scene a-scene {
+        #ar-scene.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Asegurar que A-Frame ocupe toda la pantalla */
+        a-scene {
             width: 100% !important;
             height: 100% !important;
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
+            display: block !important;
         }
 
         /* Animaciones */
@@ -247,287 +221,291 @@
 
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.03); }
         }
 
         @keyframes sway {
-            0%, 100% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
         }
 
-        @keyframes gradientBar {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 300% 50%; }
-        }
-
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
-        }
-
-        /* Animación de burbujas */
-        .bubbles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            top: 0;
-            left: 0;
-            z-index: 1;
-        }
-
-        .bubble {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            animation: floatUp 8s infinite ease-in;
-        }
-
-        @keyframes floatUp {
-            0% {
-                transform: translateY(100vh) scale(0);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) scale(1);
-                opacity: 0;
-            }
-        }
-
-        /* Scroll suave para contenido largo en móviles pequeños */
-        .loading-content-container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            padding: 10px;
-        }
-
-        /* Mensaje de orientación para móviles */
-        .orientation-warning {
+        /* Mensaje de error si hay problema con el video */
+        .video-error {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
             color: white;
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
             padding: 20px;
-            font-size: 1.5rem;
-        }
-        
-        @media (max-height: 500px) and (orientation: landscape) {
-            .orientation-warning {
-                display: flex;
-            }
-            
-            .loading-screen {
-                display: none;
-            }
+            border-radius: 10px;
+            text-align: center;
+            z-index: 1100;
+            max-width: 300px;
         }
     </style>
 </head>
 <body>
-    <!-- Advertencia de orientación -->
-    <div class="orientation-warning">
-        <div>
-            <h2>🌴 Por favor gira tu dispositivo 📱</h2>
-            <p>Para una mejor experiencia, usa el modo vertical (portrait)</p>
-            <div style="font-size: 3rem; margin: 20px 0;">↻</div>
-        </div>
-    </div>
-
-    <!-- Pantalla de carga tropical -->
+    <!-- Pantalla de carga -->
     <div class="loading-screen" id="loadingScreen">
-        <div class="loading-content-container">
-            <div class="loading-content">
-                <h1 class="loading-title">🌴 AR TROPICAL 🌺</h1>
-                <p class="loading-subtitle">Cargando experiencia de Realidad Aumentada</p>
+        <div class="loading-content">
+            <h1 class="loading-title">🌴 AR TROPICAL 🌺</h1>
+            <p class="loading-subtitle">Cargando experiencia de Realidad Aumentada</p>
+            
+            <div class="palm-trees">
+                <div class="palm-trunk trunk-1"></div>
+                <div class="palm-trunk trunk-2"></div>
+                <div class="palm-trunk trunk-3"></div>
                 
-                <!-- Gráfica de palmeras -->
-                <div class="palm-trees">
-                    <div class="palm-trunk trunk-1"></div>
-                    <div class="palm-trunk trunk-2"></div>
-                    <div class="palm-trunk trunk-3"></div>
-                    
-                    <div class="palm-leaves leaves-1"></div>
-                    <div class="palm-leaves leaves-2"></div>
-                    <div class="palm-leaves leaves-3"></div>
-                </div>
-                
-                <!-- Barra de carga -->
-                <div class="loading-bar-container">
-                    <div class="loading-bar" id="loadingBar"></div>
-                </div>
-                
-                <!-- Porcentaje -->
-                <div class="loading-percentage" id="loadingPercentage">0%</div>
-                
-                <!-- Instrucciones -->
-                <p class="instructions">🔍 Apunta la cámara al marcador para ver el video en AR</p>
+                <div class="palm-leaves leaves-1"></div>
+                <div class="palm-leaves leaves-2"></div>
+                <div class="palm-leaves leaves-3"></div>
             </div>
+            
+            <div class="loading-bar-container">
+                <div class="loading-bar" id="loadingBar"></div>
+            </div>
+            
+            <div class="loading-percentage" id="loadingPercentage">0%</div>
+            
+            <p class="instructions">🔍 Apunta la cámara al marcador para activar el video</p>
         </div>
-        
-        <!-- Burbujas decorativas -->
-        <div class="bubbles" id="bubbles"></div>
     </div>
 
-    <!-- Escena AR (oculta inicialmente) -->
+    <!-- Mensaje de error (oculto inicialmente) -->
+    <div class="video-error" id="videoError">
+        <h3>⚠️ Error de Video</h3>
+        <p>No se pudo cargar el video. Verifica que el archivo "asset.mp4" exista.</p>
+    </div>
+
+    <!-- Escena AR -->
     <div id="ar-scene">
-        <a-scene mindar-image="imageTargetSrc: ./marker.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" renderer="colorManagement: true; alpha: true;">
+        <!-- A-Frame Scene con evento loaded -->
+        <a-scene 
+            mindar-image="imageTargetSrc: ./marker.mind; autoStart: false;" 
+            vr-mode-ui="enabled: false" 
+            device-orientation-permission-ui="enabled: false"
+            renderer="colorManagement: true; alpha: true;"
+            loading-screen="enabled: false"
+        >
             <a-assets>
-                <video id="ar-video" src="./asset.mp4" loop muted playsinline crossorigin="anonymous"></video>
+                <video 
+                    id="ar-video" 
+                    src="./asset.mp4" 
+                    preload="auto"
+                    loop 
+                    muted 
+                    playsinline 
+                    crossorigin="anonymous"
+                    webkit-playsinline
+                ></video>
             </a-assets>
-            <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-            <a-entity id="ar-target" mindar-image-target="targetIndex: 0">
+            
+            <a-camera 
+                position="0 0 0" 
+                look-controls="enabled: false"
+                wasd-controls="enabled: false"
+            ></a-camera>
+            
+            <a-entity 
+                id="ar-target" 
+                mindar-image-target="targetIndex: 0"
+            >
                 <a-plane
                     src="#ar-video"
                     position="0 0 0"
                     rotation="0 0 0"
                     height="1"
-                    width="1.8076923076923077"
+                    width="1.78"
+                    material="transparent: false; alphaTest: 0.5;"
                 ></a-plane>
             </a-entity>
         </a-scene>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Ajustar altura para móviles iOS
-            function setFullHeight() {
-                const vh = window.innerHeight * 0.01;
-                document.documentElement.style.setProperty('--vh', `${vh}px`);
-                
-                // Aplicar altura completa a pantalla de carga
-                const loadingScreen = document.getElementById('loadingScreen');
-                loadingScreen.style.height = window.innerHeight + 'px';
-            }
-            
-            // Llamar al cargar y al redimensionar
-            setFullHeight();
-            window.addEventListener('resize', setFullHeight);
-            window.addEventListener('orientationchange', setFullHeight);
-            
-            // Elementos DOM
+        // Esperar a que todo esté cargado
+        window.addEventListener('load', function() {
             const loadingScreen = document.getElementById('loadingScreen');
             const loadingBar = document.getElementById('loadingBar');
             const loadingPercentage = document.getElementById('loadingPercentage');
             const arScene = document.getElementById('ar-scene');
-            const bubblesContainer = document.getElementById('bubbles');
+            const videoError = document.getElementById('videoError');
             
-            // Crear burbujas decorativas
-            function createBubbles() {
-                // Limpiar burbujas existentes
-                bubblesContainer.innerHTML = '';
+            let loadProgress = 0;
+            let isVideoLoaded = false;
+            let isARLoaded = false;
+            
+            // Verificar si el video existe y puede cargarse
+            function checkVideo() {
+                return new Promise((resolve, reject) => {
+                    const video = document.querySelector('#ar-video');
+                    if (!video) {
+                        reject('Elemento video no encontrado');
+                        return;
+                    }
+                    
+                    video.addEventListener('loadeddata', () => {
+                        console.log('Video cargado correctamente');
+                        isVideoLoaded = true;
+                        updateProgress();
+                        resolve();
+                    });
+                    
+                    video.addEventListener('error', (e) => {
+                        console.error('Error cargando video:', e);
+                        showError('Error al cargar el video. Verifica la ruta del archivo.');
+                        reject(e);
+                    });
+                    
+                    // Forzar carga del video
+                    video.load();
+                });
+            }
+            
+            // Verificar cuando A-Frame está listo
+            function waitForAFrame() {
+                return new Promise((resolve) => {
+                    const scene = document.querySelector('a-scene');
+                    
+                    if (scene.hasLoaded) {
+                        console.log('A-Frame ya cargado');
+                        isARLoaded = true;
+                        updateProgress();
+                        resolve();
+                        return;
+                    }
+                    
+                    scene.addEventListener('loaded', () => {
+                        console.log('A-Frame cargado completamente');
+                        isARLoaded = true;
+                        updateProgress();
+                        resolve();
+                    });
+                });
+            }
+            
+            // Mostrar error
+            function showError(message) {
+                videoError.querySelector('p').textContent = message;
+                videoError.style.display = 'block';
+                loadingScreen.style.display = 'none';
+            }
+            
+            // Actualizar progreso de carga
+            function updateProgress() {
+                let progress = 0;
                 
-                const bubbleCount = window.innerWidth < 768 ? 15 : 25;
+                if (isVideoLoaded) progress += 50;
+                if (isARLoaded) progress += 50;
                 
-                for (let i = 0; i < bubbleCount; i++) {
-                    const bubble = document.createElement('div');
-                    bubble.className = 'bubble';
-                    
-                    // Tamaño proporcional al dispositivo
-                    const baseSize = window.innerWidth < 768 ? 40 : 60;
-                    const size = Math.random() * baseSize + 15;
-                    bubble.style.width = `${size}px`;
-                    bubble.style.height = `${size}px`;
-                    
-                    // Posición aleatoria
-                    bubble.style.left = `${Math.random() * 100}%`;
-                    
-                    // Retraso de animación aleatorio
-                    bubble.style.animationDelay = `${Math.random() * 5}s`;
-                    
-                    // Color aleatorio de la paleta tropical
-                    const colors = [
-                        'rgba(255, 107, 107, 0.4)',
-                        'rgba(255, 230, 109, 0.4)',
-                        'rgba(78, 205, 196, 0.4)',
-                        'rgba(26, 83, 92, 0.4)'
-                    ];
-                    bubble.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    
-                    bubblesContainer.appendChild(bubble);
+                loadProgress = Math.max(loadProgress, progress);
+                loadingBar.style.width = `${loadProgress}%`;
+                loadingPercentage.textContent = `${loadProgress}%`;
+                
+                if (loadProgress >= 100) {
+                    completeLoading();
                 }
             }
             
-            // Inicializar burbujas
-            createBubbles();
-            
-            // Recrear burbujas al cambiar tamaño
-            window.addEventListener('resize', createBubbles);
-            
-            // Simular progreso de carga
-            let progress = 0;
-            const loadingInterval = setInterval(() => {
-                progress += Math.random() * 15 + 5;
-                if (progress > 100) progress = 100;
-                
-                loadingBar.style.width = `${progress}%`;
-                loadingPercentage.textContent = `${Math.round(progress)}%`;
-                
-                if (progress >= 100) {
-                    clearInterval(loadingInterval);
+            // Completar carga y mostrar AR
+            function completeLoading() {
+                setTimeout(() => {
+                    loadingScreen.style.opacity = '0';
                     
-                    // Esperar un momento y luego ocultar pantalla de carga
                     setTimeout(() => {
-                        loadingScreen.style.opacity = '0';
+                        loadingScreen.style.display = 'none';
+                        arScene.classList.add('visible');
                         
-                        setTimeout(() => {
-                            loadingScreen.style.display = 'none';
-                            arScene.style.opacity = '1';
+                        // Iniciar MindAR después de mostrar la escena
+                        const scene = document.querySelector('a-scene');
+                        const mindarSystem = scene.systems['mindar-image-system'];
+                        
+                        if (mindarSystem) {
+                            console.log('Iniciando MindAR...');
+                            mindarSystem.start();
                             
-                            // Inicializar eventos AR después de mostrar la escena
-                            const arTarget = document.querySelector('#ar-target');
-                            const video = document.querySelector('#ar-video');
-                            
-                            if (arTarget && video) {
-                                arTarget.addEventListener('targetFound', () => { 
-                                    video.play().catch(e => console.error("Error al reproducir video", e)); 
-                                });
-                                arTarget.addEventListener('targetLost', () => { 
-                                    video.pause(); 
-                                });
-                            }
-                        }, 1000);
-                    }, 800);
-                }
-            }, 200);
-            
-            // Crear más burbujas periódicamente
-            setInterval(() => {
-                if (loadingScreen.style.display !== 'none') {
-                    const bubble = document.createElement('div');
-                    bubble.className = 'bubble';
-                    
-                    const baseSize = window.innerWidth < 768 ? 30 : 50;
-                    const size = Math.random() * baseSize + 10;
-                    bubble.style.width = `${size}px`;
-                    bubble.style.height = `${size}px`;
-                    bubble.style.left = `${Math.random() * 100}%`;
-                    
-                    const colors = ['rgba(255, 255, 255, 0.3)', 'rgba(255, 230, 109, 0.3)'];
-                    bubble.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    
-                    bubblesContainer.appendChild(bubble);
-                    
-                    // Remover burbuja después de animación
-                    setTimeout(() => {
-                        if (bubble.parentNode) {
-                            bubble.parentNode.removeChild(bubble);
+                            // Configurar eventos del video
+                            setupVideoEvents();
+                        } else {
+                            console.error('Sistema MindAR no encontrado');
                         }
-                    }, 8000);
+                    }, 500);
+                }, 500);
+            }
+            
+            // Configurar eventos para el video
+            function setupVideoEvents() {
+                const arTarget = document.querySelector('#ar-target');
+                const video = document.querySelector('#ar-video');
+                
+                if (!arTarget || !video) {
+                    console.error('Elementos AR no encontrados');
+                    return;
                 }
-            }, 1500);
+                
+                console.log('Configurando eventos de video...');
+                
+                arTarget.addEventListener('targetFound', (event) => {
+                    console.log('Marcador encontrado!');
+                    video.play().then(() => {
+                        console.log('Video reproducido correctamente');
+                    }).catch(error => {
+                        console.error('Error al reproducir video:', error);
+                        showError('No se pudo reproducir el video. Verifica los permisos.');
+                    });
+                });
+                
+                arTarget.addEventListener('targetLost', (event) => {
+                    console.log('Marcador perdido');
+                    video.pause();
+                });
+            }
+            
+            // Iniciar proceso de carga
+            function startLoading() {
+                console.log('Iniciando carga de recursos...');
+                
+                // Simular progreso inicial
+                const fakeProgress = setInterval(() => {
+                    if (loadProgress < 30) {
+                        loadProgress += 2;
+                        loadingBar.style.width = `${loadProgress}%`;
+                        loadingPercentage.textContent = `${loadProgress}%`;
+                    } else {
+                        clearInterval(fakeProgress);
+                    }
+                }, 100);
+                
+                // Cargar recursos reales
+                Promise.all([
+                    checkVideo(),
+                    waitForAFrame()
+                ]).then(() => {
+                    console.log('Todos los recursos cargados');
+                }).catch(error => {
+                    console.error('Error en carga:', error);
+                });
+            }
+            
+            // Ajustar altura para móviles
+            function adjustForMobile() {
+                const vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+                
+                if (loadingScreen) {
+                    loadingScreen.style.height = window.innerHeight + 'px';
+                }
+            }
+            
+            // Inicializar
+            adjustForMobile();
+            window.addEventListener('resize', adjustForMobile);
+            window.addEventListener('orientationchange', adjustForMobile);
+            
+            // Esperar un momento antes de iniciar carga
+            setTimeout(startLoading, 500);
         });
     </script>
 </body>
