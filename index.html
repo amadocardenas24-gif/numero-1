@@ -22,7 +22,7 @@
             background: black;
         }
 
-        /* Pantalla de carga simple pero efectiva */
+        /* Pantalla de carga */
         .loading-screen {
             position: fixed;
             top: 0;
@@ -43,7 +43,7 @@
         .loading-content {
             text-align: center;
             padding: 20px;
-            max-width: 90%;
+            max-width: 95%;
         }
 
         .loading-title {
@@ -54,7 +54,7 @@
             font-weight: bold;
         }
 
-        /* Barra de carga simple */
+        /* Barra de carga */
         .loading-bar-container {
             width: 80%;
             max-width: 300px;
@@ -82,38 +82,151 @@
             text-shadow: 2px 2px 0 #1A535C;
         }
 
-        .loading-message {
-            color: white;
-            font-size: 1rem;
-            margin-top: 20px;
-            opacity: 0.8;
+        /* Instrucciones gráficas */
+        .instructions-container {
+            margin-top: 30px;
+            position: relative;
+            height: 200px;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        /* Botón de sonido */
-        .sound-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #FF6B6B;
-            border: 2px solid white;
+        .instruction-step {
+            position: absolute;
+            text-align: center;
+            opacity: 0;
+            animation: stepFade 12s infinite;
+        }
+
+        .instruction-step:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .instruction-step:nth-child(2) {
+            animation-delay: 4s;
+        }
+
+        .instruction-step:nth-child(3) {
+            animation-delay: 8s;
+        }
+
+        .instruction-icon {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            display: block;
+            animation: bounce 2s infinite;
+        }
+
+        .instruction-text {
             color: white;
-            font-size: 24px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1001;
-            display: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            background: rgba(26, 83, 92, 0.7);
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* Animaciones de instrucciones */
+        @keyframes stepFade {
+            0%, 33% { opacity: 1; }
+            66%, 100% { opacity: 0; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+
+        /* Botón de sonido GRANDE */
+        .sound-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 80px; /* Más grande */
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF6B6B, #FFE66D);
+            border: 3px solid white;
+            color: white;
+            font-size: 36px; /* Más grande */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            display: none;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+        }
+
+        .sound-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+        }
+
+        .sound-btn.active {
+            background: linear-gradient(135deg, #4ECDC4, #1A535C);
+            animation: pulseGlow 2s infinite;
+        }
+
+        /* Instrucciones flotantes en AR */
+        .ar-instructions {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 1002;
+            display: none;
+        }
+
+        .ar-instruction-card {
+            background: rgba(255, 107, 107, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            animation: slideInDown 0.5s ease;
+        }
+
+        .ar-instruction-card .icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            animation: swing 2s infinite;
+        }
+
+        /* Animaciones para instrucciones AR */
+        @keyframes slideInDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes swing {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 107, 107, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(78, 205, 196, 0.8); }
         }
 
         /* Escena AR */
@@ -126,6 +239,68 @@
             opacity: 0;
             transition: opacity 1s ease;
         }
+
+        /* Indicador de marcador encontrado */
+        .target-found-indicator {
+            position: fixed;
+            bottom: 120px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(78, 205, 196, 0.9);
+            border: 2px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            display: none;
+            animation: pulse 1.5s infinite;
+        }
+
+        .target-found-indicator .icon {
+            font-size: 30px;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sound-btn {
+                width: 70px;
+                height: 70px;
+                font-size: 32px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .instruction-icon {
+                font-size: 3rem;
+            }
+            
+            .instruction-text {
+                font-size: 1rem;
+            }
+            
+            .loading-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-height: 700px) {
+            .instructions-container {
+                height: 150px;
+                margin-top: 20px;
+            }
+            
+            .instruction-icon {
+                font-size: 2.5rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -137,12 +312,40 @@
                 <div class="loading-bar" id="loadingBar"></div>
             </div>
             <div class="loading-percentage" id="loadingPercentage">0%</div>
-            <div class="loading-message" id="loadingMessage">Cargando experiencia AR...</div>
+            
+            <!-- Instrucciones gráficas animadas -->
+            <div class="instructions-container">
+                <div class="instruction-step">
+                    <span class="instruction-icon">📱</span>
+                    <div class="instruction-text">Abre tu cámara</div>
+                </div>
+                <div class="instruction-step">
+                    <span class="instruction-icon">🔍</span>
+                    <div class="instruction-text">Busca el marcador</div>
+                </div>
+                <div class="instruction-step">
+                    <span class="instruction-icon">🎬</span>
+                    <div class="instruction-text">¡Disfruta el video AR!</div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Botón de sonido -->
+    <!-- Botón de sonido GRANDE -->
     <button class="sound-btn" id="soundToggle">🔇</button>
+    
+    <!-- Indicador de marcador encontrado -->
+    <div class="target-found-indicator" id="targetFoundIndicator">
+        <div class="icon">🎯</div>
+    </div>
+    
+    <!-- Instrucciones flotantes en AR -->
+    <div class="ar-instructions" id="arInstructions">
+        <div class="ar-instruction-card">
+            <span class="icon">👉</span>
+            Mueve lentamente sobre el marcador
+        </div>
+    </div>
 
     <!-- Escena AR -->
     <div id="ar-scene">
@@ -154,7 +357,6 @@
         function simulateLoading() {
             const loadingBar = document.getElementById('loadingBar');
             const loadingPercentage = document.getElementById('loadingPercentage');
-            const loadingMessage = document.getElementById('loadingMessage');
             let progress = 0;
             
             // Incremento más lento para dar tiempo al audio
@@ -164,17 +366,6 @@
                 
                 loadingBar.style.width = progress + '%';
                 loadingPercentage.textContent = Math.round(progress) + '%';
-                
-                // Cambiar mensajes según progreso
-                if (progress < 30) {
-                    loadingMessage.textContent = 'Inicializando AR...';
-                } else if (progress < 60) {
-                    loadingMessage.textContent = 'Cargando video...';
-                } else if (progress < 90) {
-                    loadingMessage.textContent = 'Preparando audio...';
-                } else {
-                    loadingMessage.textContent = '¡Listo! Busca el marcador';
-                }
                 
                 if (progress >= 100) {
                     clearInterval(interval);
@@ -199,7 +390,7 @@
                 // Ocultar pantalla de carga
                 loadingScreen.style.display = 'none';
                 
-                // Crear escena A-Frame dinámicamente (esto ayuda con la inicialización)
+                // Crear escena A-Frame dinámicamente
                 arScene.innerHTML = `
                     <a-scene 
                         mindar-image="imageTargetSrc: ./marker.mind; autoStart: true; uiScanning: no; uiLoading: no;" 
@@ -247,10 +438,23 @@
                 setTimeout(() => {
                     arScene.style.opacity = '1';
                     
+                    // Mostrar instrucciones flotantes
+                    const arInstructions = document.getElementById('arInstructions');
+                    arInstructions.style.display = 'block';
+                    
+                    // Ocultar instrucciones después de 5 segundos
+                    setTimeout(() => {
+                        arInstructions.style.opacity = '0';
+                        setTimeout(() => {
+                            arInstructions.style.display = 'none';
+                        }, 500);
+                    }, 5000);
+                    
                     // Esperar a que A-Frame cargue y configurar eventos
                     setTimeout(() => {
                         setupAREvents();
-                    }, 1000); // Otro retardo para asegurar
+                    }, 1000);
+                    
                 }, 100);
                 
             }, 500);
@@ -259,6 +463,7 @@
         // Configurar eventos AR
         function setupAREvents() {
             const soundToggle = document.getElementById('soundToggle');
+            const targetFoundIndicator = document.getElementById('targetFoundIndicator');
             let isMuted = true;
             
             // Esperar a que existan los elementos
@@ -275,8 +480,15 @@
                     arTarget.addEventListener('targetFound', () => {
                         console.log('Marcador detectado - Reproduciendo video');
                         
-                        // Mostrar botón de sonido
+                        // Mostrar botón de sonido GRANDE
                         soundToggle.style.display = 'flex';
+                        
+                        // Mostrar indicador de marcador encontrado
+                        targetFoundIndicator.style.display = 'flex';
+                        
+                        // Ocultar instrucciones flotantes si aún están visibles
+                        const arInstructions = document.getElementById('arInstructions');
+                        arInstructions.style.display = 'none';
                         
                         // Reproducir video (con mute por defecto)
                         video.play().catch(e => {
@@ -290,24 +502,43 @@
                     arTarget.addEventListener('targetLost', () => {
                         console.log('Marcador perdido - Pausando video');
                         video.pause();
+                        
+                        // Ocultar indicador de marcador encontrado
+                        targetFoundIndicator.style.display = 'none';
+                        
+                        // Mostrar instrucciones nuevamente después de 3 segundos
+                        setTimeout(() => {
+                            if (video.paused) {
+                                const arInstructions = document.getElementById('arInstructions');
+                                arInstructions.style.display = 'block';
+                                arInstructions.style.opacity = '1';
+                            }
+                        }, 3000);
                     });
                     
-                    // Configurar botón de sonido
+                    // Configurar botón de sonido GRANDE
                     soundToggle.addEventListener('click', () => {
                         isMuted = !isMuted;
                         video.muted = isMuted;
                         
                         if (isMuted) {
                             soundToggle.textContent = '🔇';
+                            soundToggle.classList.remove('active');
                             console.log('Sonido desactivado');
                         } else {
                             soundToggle.textContent = '🔊';
+                            soundToggle.classList.add('active');
                             console.log('Sonido activado');
                             
                             // RETARDO CRÍTICO: Pequeño delay antes de activar audio
                             setTimeout(() => {
                                 if (!isMuted) {
                                     video.muted = false;
+                                    // Feedback visual adicional
+                                    soundToggle.style.transform = 'scale(1.2)';
+                                    setTimeout(() => {
+                                        soundToggle.style.transform = 'scale(1)';
+                                    }, 200);
                                 }
                             }, 200);
                         }
