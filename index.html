@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>AR Video Experience - Tropical AR</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+        /* CSS corregido y optimizado */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { overflow: hidden; height: 100vh; width: 100vw; font-family: Arial, sans-serif; background: black; }
+        
+        /* Pantalla de selección de idioma */
+        .language-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 25%, #4ECDC4 50%, #1A535C 75%);
+            background-size: 400% 400%; animation: gradientBG 15s ease infinite;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; padding: 20px;
+        }
+        
+        .language-content {
+            text-align: center; animation: fadeInUp 0.8s ease;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border-radius: 30px;
+            padding: 40px; border: 3px solid white; max-width: 95%;
+        }
+        
+        .language-title { font-size: 2.5rem; color: white; margin-bottom: 40px; font-weight: bold; text-shadow: 3px 3px 0 #1A535C; }
+        .language-subtitle { color: white; font-size: 1.5rem; margin-bottom: 30px; text-shadow: 2px 2px 0 #FF6B6B; }
+        
+        .language-buttons { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 400px; margin: 0 auto; }
+        .language-btn {
+            background: linear-gradient(135deg, #4ECDC4, #1A535C); color: white; border: none;
+            padding: 25px 30px; font-size: 1.5rem; border-radius: 50px; cursor: pointer; font-weight: bold;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3); transition: all 0.3s ease;
+            display: flex; align-items: center; justify-content: space-between; text-align: left; position: relative; overflow: hidden;
+        }
+        
+        .language-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
+        .language-btn.selected { background: linear-gradient(135deg, #FF6B6B, #FFE66D); transform: translateY(-5px); box-shadow: 0 15px 30px rgba(255,107,107,0.4); }
+        
+        /* Animaciones */
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Ocultar controles A-Frame */
+        .a-enter-vr, .a-enter-ar, .a-orientation-modal, .a-vr-modal, .vr-button, .ar-button,
+        .a-enter-vr-button, .a-enter-ar-button { display: none !important; }
+    </style>
+</head>
+<body>
+    <!-- Pantalla de selección de idioma -->
+    <div class="language-screen" id="languageScreen">
+        <div class="language-content">
+            <div class="language-icon">??</div>
+            <h1 class="language-title" id="languageTitle">AR TROPICAL</h1>
+            <div class="language-subtitle" id="languageSubtitle">Selecciona tu idioma / Select your language / Selecione seu idioma</div>
+            <div class="language-buttons">
+                <button class="language-btn" id="langEs" data-lang="es">???? Español</button>
+                <button class="language-btn" id="langEn" data-lang="en">???? English</button>
+                <button class="language-btn" id="langPt" data-lang="pt">???? Português</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Escena AR -->
+    <div id="ar-scene"></div>
+
+    <script>
+        // Sistema multilingüe
+        const translations = {
+            es: { languageTitle: "AR TROPICAL", languageSubtitle: "Selecciona tu idioma" },
+            en: { languageTitle: "AR TROPICAL", languageSubtitle: "Select your language" },
+            pt: { languageTitle: "AR TROPICAL", languageSubtitle: "Selecione seu idioma" }
+        };
+
+        let currentLang = 'es';
+        let selectedLang = null;
+
+        // Configurar botones de idioma
+        function setupLanguageButtons() {
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    selectedLang = btn.dataset.lang;
+                    updateLanguage(selectedLang);
+                    setTimeout(() => initARScene(), 1000);
+                });
+            });
+        }
+
+        function updateLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            document.getElementById('languageTitle').textContent = t.languageTitle;
+            document.getElementById('languageSubtitle').textContent = t.languageSubtitle;
+            
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.remove('selected');
+                if (btn.dataset.lang === lang) btn.classList.add('selected');
+            });
+        }
+
+        // Inicializar escena AR
+        function initARScene() {
+            const languageScreen = document.getElementById('languageScreen');
+            languageScreen.style.opacity = '0';
+            setTimeout(() => {
+                languageScreen.style.display = 'none';
+                
+                const arScene = document.getElementById('ar-scene');
+                arScene.innerHTML = `
+                    <a-scene mindar-image imageTargetSrc="./marker.mind" autoStart="true" uiScanning="no" 
+                        uiLoading="no" uiError="no" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false"
+                        permission-ui="enabled: false" renderer="colorManagement: true; alpha: true; antialias: true; embedded: true"
+                        loading-screen="enabled: false; dotsColor: transparent; backgroundColor: transparent"
+                        keyboard-shortcuts="enterVR: false">
+                        
+                        <a-assets>
+                            <video id="ar-video" src="asset.mp4" preload="auto" loop muted playsinline crossorigin="anonymous" webkit-playsinline></video>
+                        </a-assets>
+                        
+                        <a-camera position="0 0 0" look-controls="enabled: false" wasd-controls="enabled: false" cursor="rayOrigin: mouse"></a-camera>
+                        
+                        <a-entity id="ar-target" mindar-image-target="targetIndex: 0">
+                            <a-plane src="#ar-video" position="0 0 0" rotation="0 0 0" height="1" width="1.78"
+                                material="transparent: true; alphaTest: 0.5"></a-plane>
+                        </a-entity>
+                    </a-scene>
+                `;
+                
+                setTimeout(() => arScene.style.display = 'block', 100);
+            }, 500);
+        }
+
+        // Inicialización
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('Página cargada. Mostrando selección de idioma...');
+            setupLanguageButtons();
+        });
+    </script>
+</body>
+</html>
